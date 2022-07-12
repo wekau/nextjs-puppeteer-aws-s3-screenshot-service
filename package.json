@@ -17,5 +17,8 @@
   "devDependencies": {
     "aws-sdk": "^2.848.0",
     "puppeteer": "^7.1.0"
+  },
+  "engines": {
+    "node": "^14"
   }
 }
