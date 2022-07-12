@@ -1,6 +1,8 @@
 .inputArea input,
 .inputArea button {
 	font-size: 30px;
+	width: 600px;
+	margin-top: 15px;
 }
 
 .container {
