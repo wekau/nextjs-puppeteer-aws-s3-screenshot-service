@@ -6,7 +6,6 @@ import Image from "next/image";
 export default function Home() {
   const [websiteURL, setWebsiteURL] = useState("");
   const [endPointAPI, setEndPointAPI] = useState("");
-  const [bucketName, setBucketName] = useState("");
   const [folderName, setFolderName] = useState("");
   const [fileName, setFileName] = useState("");
   const [fileExpiry, setFileExpiry] = useState("");
@@ -21,15 +20,14 @@ export default function Home() {
       body: JSON.stringify({
         url: websiteURL,
         api: endPointAPI,
-        bucketName,
         folderName,
         fileName,
         fileExpiry,
       }),
     }).then((res) => res.json());
-
-    setImageURL(res.data);
-    console.log(res);
+    const imageURL = res.data;
+    setImageURL(imageURL);
+    console.log("Image URL: ", imageURL);
   }
 
   return (
@@ -46,9 +44,6 @@ export default function Home() {
         <br />
 
         <input type="text" value={endPointAPI} onChange={(e) => setEndPointAPI(e.target.value)} placeholder="Enter API KEY" />
-        <br />
-
-        <input type="text" value={bucketName} onChange={(e) => setBucketName(e.target.value)} placeholder="Enter S3 Bucket Name" />
         <br />
 
         <input type="text" value={folderName} onChange={(e) => setFolderName(e.target.value)} placeholder="Enter Folder Name (Auto create in S3)" />

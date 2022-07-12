@@ -11,6 +11,27 @@ npm install
 npm run dev
 ```
 
+## Make API Call
+
+```
+const res = await fetch("http://localhost:3000/api/get-screenshot-image", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: websiteURL,
+        api: endPointAPI,
+        folderName,
+        fileName,
+        fileExpiry,
+      }),
+    }).then((res) => res.json());
+    const imageURL = res.data;
+    setImageURL(imageURL);
+    console.log("Image URL: ", imageURL);
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.

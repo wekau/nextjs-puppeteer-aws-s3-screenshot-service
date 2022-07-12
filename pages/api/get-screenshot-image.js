@@ -41,7 +41,7 @@ async function getBrowserInstance() {
 export default async (req, res) => {
   const url = req.body.url;
   const endpointAPIKey = req.body.api;
-  const bucketName = req.body.bucketName;
+  const bucketName = process.env.S3_BUCKET_NAME;
   const folderName = req.body.folderName;
   const fileName = req.body.fileName;
   const fileExpiry = req.body.fileExpiry;
