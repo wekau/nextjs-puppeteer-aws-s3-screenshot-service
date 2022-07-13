@@ -38,6 +38,22 @@ npm run dev
   }
 ```
 
+### JSON Post Request
+
+```
+{
+        "url": "https://www.google.com/",
+        "api": "xxxxx",
+        "regionName": "ap-southeast-2",
+        "bucketName": "xxxx",
+        "folderName": "postman",
+        "fileName": "pokemon",
+        "imageWidth": "1200",
+        "imageHeight": "700",
+        "fileExpiry": "10"
+        }
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
