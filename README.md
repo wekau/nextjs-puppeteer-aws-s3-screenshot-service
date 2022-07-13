@@ -14,7 +14,8 @@ npm run dev
 ## Make API Call
 
 ```
-const res = await fetch("http://localhost:3000/api/get-screenshot-image", {
+  async function submitWebsiteURL() {
+    const res = await fetch("http://localhost:3000/api/get-screenshot-image", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -22,14 +23,19 @@ const res = await fetch("http://localhost:3000/api/get-screenshot-image", {
       body: JSON.stringify({
         url: websiteURL,
         api: endPointAPI,
+        regionName,
+        bucketName,
         folderName,
         fileName,
+        imageWidth,
+        imageHeight,
         fileExpiry,
       }),
     }).then((res) => res.json());
     const imageURL = res.data;
     setImageURL(imageURL);
     console.log("Image URL: ", imageURL);
+  }
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

@@ -1,15 +1,7 @@
 import chromium from "chrome-aws-lambda";
 import AWS from "aws-sdk";
 
-const S3 = new AWS.S3({
-  credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  },
-  region: process.env.S3_REGION,
-});
-
-async function getBrowserInstance() {
+async function getBrowserInstance(imageWidth, imageHeight) {
   const executablePath = await chromium.executablePath;
 
   if (!executablePath) {
@@ -19,8 +11,8 @@ async function getBrowserInstance() {
       args: chromium.args,
       headless: true,
       defaultViewport: {
-        width: 1280,
-        height: 720,
+        width: Number(imageWidth),
+        height: Number(imageHeight),
       },
       ignoreHTTPSErrors: true,
     });
@@ -29,8 +21,8 @@ async function getBrowserInstance() {
   return chromium.puppeteer.launch({
     args: chromium.args,
     defaultViewport: {
-      width: 1280,
-      height: 720,
+      width: Number(imageWidth),
+      height: Number(imageHeight),
     },
     executablePath,
     headless: chromium.headless,
@@ -39,11 +31,21 @@ async function getBrowserInstance() {
 }
 
 export default async (req, res) => {
+  const S3 = new AWS.S3({
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID,
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    },
+    region: req.body.regionName,
+  });
+
   const url = req.body.url;
   const endpointAPIKey = req.body.api;
-  const bucketName = process.env.S3_BUCKET_NAME;
+  const bucketName = req.body.bucketName;
   const folderName = req.body.folderName;
   const fileName = req.body.fileName;
+  const imageWidth = req.body.imageWidth;
+  const imageHeight = req.body.imageHeight;
   const fileExpiry = req.body.fileExpiry;
   const urlRegex = /((?:(?:http?|ftp)[s]*:\/\/)?[a-z0-9-%\/\&=?\.]+\.[a-z]{2,4}\/?([^\s<>\#%"\,\{\}\\|\\\^\[\]`]+)?)/gi;
   const urlTest = urlRegex.test(url);
@@ -62,7 +64,7 @@ export default async (req, res) => {
   let browser = null;
 
   try {
-    browser = await getBrowserInstance();
+    browser = await getBrowserInstance(imageWidth, imageHeight);
     let urlMatch = url.match(urlRegex)[0];
     console.log("URL found: ", urlMatch);
     let page = await browser.newPage();
